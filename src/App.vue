@@ -1,28 +1,21 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <audio-player
+      src="https://nyc3.digitaloceanspaces.com/satyagrah/audio/hwbjpkealc-1582633625.mp3"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import AudioPlayer from "./components/AudioPlayer.vue";
+import "@/assets/scss/base.scss";
+import "@/assets/scss/editor.scss";
+import "@/assets/scss/article.scss";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+    AudioPlayer
   }
 };
 </script>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
