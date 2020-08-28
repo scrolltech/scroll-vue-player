@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <audio
@@ -27,13 +26,20 @@
       @touchcancel="handleMouseUp"
     >
       <div class="player-button gold-button">
-        <i :class="['icon', paused ? 'audio-play-icon' : 'audio-pause-icon']"></i>
+        <i
+          :class="['icon', paused ? 'audio-play-icon' : 'audio-pause-icon']"
+        ></i>
       </div>
 
-      <div ref="currentTimeEl" class="player-time player-current-time">{{ currentTimeText }}</div>
+      <div ref="currentTimeEl" class="player-time player-current-time">
+        {{ currentTimeText }}
+      </div>
 
       <div ref="playerSeekbarEl" class="player-seekbar">
-        <div ref="progressEl" :class="['progress', buffering ? 'indeterminate-progress' : '']">
+        <div
+          ref="progressEl"
+          :class="['progress', buffering ? 'indeterminate-progress' : '']"
+        >
           <div ref="progressDotEl" class="progress-pin"></div>
           <div
             ref="progressBarEl"
@@ -46,7 +52,9 @@
         </div>
       </div>
 
-      <div ref="endTimeEl" class="player-time player-end-time">{{ endTimeText }}</div>
+      <div ref="endTimeEl" class="player-time player-end-time">
+        {{ endTimeText }}
+      </div>
     </div>
   </div>
 </template>
