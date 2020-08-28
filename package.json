@@ -2,8 +2,8 @@
   "name": "scroll-vue-player",
   "version": "0.1.0",
   "private": true,
-  "main": "dist/AudioPlayer.vue.common.min.js",
-  "module": "dist/AudioPlayer.vue.umd.min.js",
+  "main": "./dist/components/AudioPlayer.vue.common.min.js",
+  "module": "./dist/components/AudioPlayer.vue.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name src/components/AudioPlayer.vue",
