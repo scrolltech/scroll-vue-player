@@ -11,6 +11,7 @@
       @waiting="onBuffering"
       @pause="onPause"
       @ended="onEnded"
+      @error="onError"
     />
     <div
       :class="['audio-player', paused ? '' : 'audio-player-playing']"
@@ -225,6 +226,11 @@ export default {
     },
     onBuffering() {
       this.buffering = true;
+    },
+    onError(e) {
+      this.paused = true;
+      this.buffering = false;
+      this.$emit("error", e);
     },
     isNearSeekBar(e) {
       const isTouchEvent = e.type.includes("touch");

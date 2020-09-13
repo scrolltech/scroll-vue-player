@@ -3,7 +3,10 @@ module.exports = {
     [
       "@vue/cli-plugin-babel/preset",
       {
-        useBuiltIns: false
+        useBuiltIns: false,
+        targets: {
+          esmodules: true
+        }
       }
     ]
   ]
