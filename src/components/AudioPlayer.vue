@@ -134,6 +134,8 @@ export default {
 
       e.preventDefault();
 
+      this.$emit("click", e);
+
       if (this.disabled) return;
 
       if (this.isNearSeekBar(e) || ignoreList.indexOf(e.target) !== -1) return;
