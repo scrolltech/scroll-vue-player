@@ -2,6 +2,7 @@
   <div id="app">
     <audio-player
       src="https://nyc3.digitaloceanspaces.com/satyagrah/audio/hwbjpkealc-1582633625.mp3"
+      disabled="true"
     />
   </div>
 </template>

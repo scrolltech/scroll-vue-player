@@ -14,9 +14,13 @@
       @error="onError"
     />
     <div
-      :class="['audio-player', paused ? '' : 'audio-player-playing']"
+      :class="[
+        'audio-player',
+        paused ? '' : 'audio-player-playing',
+        disabled ? 'audio-player-disabled' : ''
+      ]"
       ref="playerEl"
-      @click="onClickPlayer"
+      @click="handleMouseClick"
       @mousemove="handleMouseMove"
       @touchmove="handleMouseMove"
       @mousedown="handleMouseDown"
@@ -76,7 +80,7 @@ let mousedown = false;
 
 export default {
   name: "AudioPlayer",
-  props: ["src"],
+  props: ["src", "disabled"],
   data() {
     return {
       paused: true,
@@ -124,11 +128,13 @@ export default {
       this.endTime = this.$refs.audioEl.duration;
       this.buffering = false;
     },
-    onClickPlayer(e) {
+    handleMouseClick(e) {
       const { currentTimeEl, endTimeEl, audioEl } = this.$refs;
       const ignoreList = [currentTimeEl, endTimeEl];
 
       e.preventDefault();
+
+      if (this.disabled) return;
 
       if (this.isNearSeekBar(e) || ignoreList.indexOf(e.target) !== -1) return;
       if (audioEl.readyState <= 1) this.buffering = true;
@@ -151,16 +157,17 @@ export default {
       }
     },
     handleMouseDown(e) {
-      if (mousedown) return;
+      if (mousedown || this.disabled) return;
       if (this.isNearSeekBar(e)) mousedown = true;
     },
     handleMouseUp(e) {
-      if (!mousedown) return;
+      if (!mousedown || this.disabled) return;
       mousedown && this.scrub(e);
       mousedown = false;
     },
     handleMouseMove(e) {
       e.preventDefault();
+      if (this.disabled) return;
       mousedown && this.scrub(e);
     },
     handleProgess() {
@@ -232,6 +239,10 @@ export default {
       this.paused = true;
       this.buffering = false;
       this.$emit("error", e);
+    },
+    getHnalder(handler) {
+      if (this.disabled) () => {};
+      else handler;
     },
     isNearSeekBar(e) {
       const isTouchEvent = e.type.includes("touch");

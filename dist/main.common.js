@@ -203,14 +203,22 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c2ecb1c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=template&id=91850cf4&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('audio',{ref:"audioEl",attrs:{"src":_vm.src},on:{"loadedmetadata":_vm.onLoadedMetaData,"loadeddata":_vm.onLodedData,"timeupdate":_vm.onTimeUpdate,"play":_vm.onPlay,"playing":_vm.onPlaying,"waiting":_vm.onBuffering,"pause":_vm.onPause,"ended":_vm.onEnded,"error":_vm.onError}}),_c('div',{ref:"playerEl",class:['audio-player', _vm.paused ? '' : 'audio-player-playing'],on:{"click":_vm.onClickPlayer,"mousemove":_vm.handleMouseMove,"touchmove":_vm.handleMouseMove,"mousedown":_vm.handleMouseDown,"touchstart":_vm.handleMouseDown,"mouseup":_vm.handleMouseUp,"mouseleave":_vm.handleMouseUp,"touchend":_vm.handleMouseUp,"touchcancel":_vm.handleMouseUp}},[_c('div',{staticClass:"player-button gold-button"},[_c('i',{class:['icon', _vm.paused ? 'audio-play-icon' : 'audio-pause-icon']})]),_c('div',{ref:"currentTimeEl",staticClass:"player-time player-current-time"},[_vm._v(" "+_vm._s(_vm.currentTimeText)+" ")]),_c('div',{ref:"playerSeekbarEl",staticClass:"player-seekbar"},[_c('div',{ref:"progressEl",class:['progress', _vm.buffering ? 'indeterminate-progress' : '']},[_c('div',{ref:"progressDotEl",staticClass:"progress-pin"}),_c('div',{ref:"progressBarEl",staticClass:"progress-bar",staticStyle:{"width":"0"},attrs:{"role":"progressbar","aria-valuemin":"0","aria-valuemax":"100"}})])]),_c('div',{ref:"endTimeEl",staticClass:"player-time player-end-time"},[_vm._v(" "+_vm._s(_vm.endTimeText)+" ")])])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c2ecb1c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=template&id=2358722c&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('audio',{ref:"audioEl",attrs:{"src":_vm.src},on:{"loadedmetadata":_vm.onLoadedMetaData,"loadeddata":_vm.onLodedData,"timeupdate":_vm.onTimeUpdate,"play":_vm.onPlay,"playing":_vm.onPlaying,"waiting":_vm.onBuffering,"pause":_vm.onPause,"ended":_vm.onEnded,"error":_vm.onError}}),_c('div',{ref:"playerEl",class:[
+      'audio-player',
+      _vm.paused ? '' : 'audio-player-playing',
+      _vm.disabled ? 'audio-player-disabled' : ''
+    ],on:{"click":_vm.handleMouseClick,"mousemove":_vm.handleMouseMove,"touchmove":_vm.handleMouseMove,"mousedown":_vm.handleMouseDown,"touchstart":_vm.handleMouseDown,"mouseup":_vm.handleMouseUp,"mouseleave":_vm.handleMouseUp,"touchend":_vm.handleMouseUp,"touchcancel":_vm.handleMouseUp}},[_c('div',{staticClass:"player-button gold-button"},[_c('i',{class:['icon', _vm.paused ? 'audio-play-icon' : 'audio-pause-icon']})]),_c('div',{ref:"currentTimeEl",staticClass:"player-time player-current-time"},[_vm._v(" "+_vm._s(_vm.currentTimeText)+" ")]),_c('div',{ref:"playerSeekbarEl",staticClass:"player-seekbar"},[_c('div',{ref:"progressEl",class:['progress', _vm.buffering ? 'indeterminate-progress' : '']},[_c('div',{ref:"progressDotEl",staticClass:"progress-pin"}),_c('div',{ref:"progressBarEl",staticClass:"progress-bar",staticStyle:{"width":"0"},attrs:{"role":"progressbar","aria-valuemin":"0","aria-valuemax":"100"}})])]),_c('div',{ref:"endTimeEl",staticClass:"player-time player-end-time"},[_vm._v(" "+_vm._s(_vm.endTimeText)+" ")])])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/AudioPlayer.vue?vue&type=template&id=91850cf4&
+// CONCATENATED MODULE: ./src/components/AudioPlayer.vue?vue&type=template&id=2358722c&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=script&lang=js&
+//
+//
+//
+//
 //
 //
 //
@@ -290,7 +298,7 @@ const formatTime = (secNum, format) => {
 let mousedown = false;
 /* harmony default export */ var AudioPlayervue_type_script_lang_js_ = ({
   name: "AudioPlayer",
-  props: ["src"],
+  props: ["src", "disabled"],
 
   data() {
     return {
@@ -345,7 +353,7 @@ let mousedown = false;
       this.buffering = false;
     },
 
-    onClickPlayer(e) {
+    handleMouseClick(e) {
       const {
         currentTimeEl,
         endTimeEl,
@@ -353,6 +361,7 @@ let mousedown = false;
       } = this.$refs;
       const ignoreList = [currentTimeEl, endTimeEl];
       e.preventDefault();
+      if (this.disabled) return;
       if (this.isNearSeekBar(e) || ignoreList.indexOf(e.target) !== -1) return;
       if (audioEl.readyState <= 1) this.buffering = true;
       this.paused = !this.paused;
@@ -373,18 +382,19 @@ let mousedown = false;
     },
 
     handleMouseDown(e) {
-      if (mousedown) return;
+      if (mousedown || this.disabled) return;
       if (this.isNearSeekBar(e)) mousedown = true;
     },
 
     handleMouseUp(e) {
-      if (!mousedown) return;
+      if (!mousedown || this.disabled) return;
       mousedown && this.scrub(e);
       mousedown = false;
     },
 
     handleMouseMove(e) {
       e.preventDefault();
+      if (this.disabled) return;
       mousedown && this.scrub(e);
     },
 
@@ -459,6 +469,10 @@ let mousedown = false;
       this.paused = true;
       this.buffering = false;
       this.$emit("error", e);
+    },
+
+    getHnalder(handler) {
+      if (this.disabled) () => {};else handler;
     },
 
     isNearSeekBar(e) {
