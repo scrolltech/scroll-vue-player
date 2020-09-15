@@ -233,6 +233,9 @@ export default {
     },
     onEnded() {
       this.paused = true;
+      this.currentTime = 0;
+      this.$refs.audioEl.currentTime = 0;
+      this.handleProgess();
     },
     onBuffering() {
       this.buffering = true;
@@ -241,10 +244,6 @@ export default {
       this.paused = true;
       this.buffering = false;
       this.$emit("error", e);
-    },
-    getHnalder(handler) {
-      if (this.disabled) () => {};
-      else handler;
     },
     isNearSeekBar(e) {
       const isTouchEvent = e.type.includes("touch");
