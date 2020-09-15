@@ -45,7 +45,11 @@
           ref="progressEl"
           :class="['progress', buffering ? 'indeterminate-progress' : '']"
         >
-          <div ref="progressDotEl" class="progress-pin"></div>
+          <div
+            v-show="!buffering"
+            ref="progressDotEl"
+            class="progress-pin"
+          ></div>
           <div
             ref="progressBarEl"
             class="progress-bar"
