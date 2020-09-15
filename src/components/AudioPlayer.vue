@@ -88,7 +88,8 @@ export default {
   watch: {
     paused: function(newValue, oldValue) {
       const audioEl = this.$refs.audioEl;
-      if (newValue !== oldValue) newValue ? audioEl.pause() : audioEl.play();
+      if (newValue !== oldValue)
+        newValue ? !audioEl.paused && audioEl.pause() : audioEl.play();
     },
     buffering: function(newValue, oldValue) {
       if (newValue !== oldValue && newValue)

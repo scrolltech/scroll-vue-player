@@ -203,12 +203,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c2ecb1c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=template&id=73813eac&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('audio',{ref:"audioEl",attrs:{"src":_vm.src},on:{"loadedmetadata":_vm.onLoadedMetaData,"loadeddata":_vm.onLodedData,"timeupdate":_vm.onTimeUpdate,"play":_vm.onPlay,"playing":_vm.onPlaying,"waiting":_vm.onBuffering,"pause":_vm.onPause,"ended":_vm.onEnded}}),_c('div',{ref:"playerEl",class:['audio-player', _vm.paused ? '' : 'audio-player-playing'],on:{"click":_vm.onClickPlayer,"mousemove":_vm.handleMouseMove,"touchmove":_vm.handleMouseMove,"mousedown":_vm.handleMouseDown,"touchstart":_vm.handleMouseDown,"mouseup":_vm.handleMouseUp,"mouseleave":_vm.handleMouseUp,"touchend":_vm.handleMouseUp,"touchcancel":_vm.handleMouseUp}},[_c('div',{staticClass:"player-button gold-button"},[_c('i',{class:['icon', _vm.paused ? 'audio-play-icon' : 'audio-pause-icon']})]),_c('div',{ref:"currentTimeEl",staticClass:"player-time player-current-time"},[_vm._v(" "+_vm._s(_vm.currentTimeText)+" ")]),_c('div',{ref:"playerSeekbarEl",staticClass:"player-seekbar"},[_c('div',{ref:"progressEl",class:['progress', _vm.buffering ? 'indeterminate-progress' : '']},[_c('div',{ref:"progressDotEl",staticClass:"progress-pin"}),_c('div',{ref:"progressBarEl",staticClass:"progress-bar",staticStyle:{"width":"0"},attrs:{"role":"progressbar","aria-valuemin":"0","aria-valuemax":"100"}})])]),_c('div',{ref:"endTimeEl",staticClass:"player-time player-end-time"},[_vm._v(" "+_vm._s(_vm.endTimeText)+" ")])])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c2ecb1c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=template&id=91850cf4&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('audio',{ref:"audioEl",attrs:{"src":_vm.src},on:{"loadedmetadata":_vm.onLoadedMetaData,"loadeddata":_vm.onLodedData,"timeupdate":_vm.onTimeUpdate,"play":_vm.onPlay,"playing":_vm.onPlaying,"waiting":_vm.onBuffering,"pause":_vm.onPause,"ended":_vm.onEnded,"error":_vm.onError}}),_c('div',{ref:"playerEl",class:['audio-player', _vm.paused ? '' : 'audio-player-playing'],on:{"click":_vm.onClickPlayer,"mousemove":_vm.handleMouseMove,"touchmove":_vm.handleMouseMove,"mousedown":_vm.handleMouseDown,"touchstart":_vm.handleMouseDown,"mouseup":_vm.handleMouseUp,"mouseleave":_vm.handleMouseUp,"touchend":_vm.handleMouseUp,"touchcancel":_vm.handleMouseUp}},[_c('div',{staticClass:"player-button gold-button"},[_c('i',{class:['icon', _vm.paused ? 'audio-play-icon' : 'audio-pause-icon']})]),_c('div',{ref:"currentTimeEl",staticClass:"player-time player-current-time"},[_vm._v(" "+_vm._s(_vm.currentTimeText)+" ")]),_c('div',{ref:"playerSeekbarEl",staticClass:"player-seekbar"},[_c('div',{ref:"progressEl",class:['progress', _vm.buffering ? 'indeterminate-progress' : '']},[_c('div',{ref:"progressDotEl",staticClass:"progress-pin"}),_c('div',{ref:"progressBarEl",staticClass:"progress-bar",staticStyle:{"width":"0"},attrs:{"role":"progressbar","aria-valuemin":"0","aria-valuemax":"100"}})])]),_c('div',{ref:"endTimeEl",staticClass:"player-time player-end-time"},[_vm._v(" "+_vm._s(_vm.endTimeText)+" ")])])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/AudioPlayer.vue?vue&type=template&id=73813eac&
+// CONCATENATED MODULE: ./src/components/AudioPlayer.vue?vue&type=template&id=91850cf4&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=script&lang=js&
 //
@@ -271,13 +271,14 @@ var staticRenderFns = []
 //
 //
 //
-var formatTime = function formatTime(secNum, format) {
+//
+const formatTime = (secNum, format) => {
   if (!secNum) {
     return "00:00";
   }
 
-  var minutes = Math.floor(secNum / 60);
-  var seconds = Math.floor(secNum - minutes * 60);
+  const minutes = Math.floor(secNum / 60);
+  const seconds = Math.floor(secNum - minutes * 60);
 
   if (format === "ISO-8601") {
     return "T" + minutes + "M" + seconds + "S";
@@ -286,11 +287,12 @@ var formatTime = function formatTime(secNum, format) {
   return ("0" + minutes).slice(-2) + ":" + ("0" + seconds).slice(-2);
 };
 
-var mousedown = false;
+let mousedown = false;
 /* harmony default export */ var AudioPlayervue_type_script_lang_js_ = ({
   name: "AudioPlayer",
   props: ["src"],
-  data: function data() {
+
+  data() {
     return {
       paused: true,
       buffering: false,
@@ -298,18 +300,21 @@ var mousedown = false;
       currentTime: 0
     };
   },
+
   watch: {
-    paused: function paused(newValue, oldValue) {
-      var audioEl = this.$refs.audioEl;
-      if (newValue !== oldValue) newValue ? audioEl.pause() : audioEl.play();
+    paused: function (newValue, oldValue) {
+      const audioEl = this.$refs.audioEl;
+      if (newValue !== oldValue) newValue ? !audioEl.paused && audioEl.pause() : audioEl.play();
     },
-    buffering: function buffering(newValue, oldValue) {
+    buffering: function (newValue, oldValue) {
       if (newValue !== oldValue && newValue) this.$refs.progressBarEl.style.width = "100%";
     }
   },
   computed: {
-    endTimeText: function endTimeText() {
-      var endTimeEl = this.$refs.endTimeEl;
+    endTimeText: function () {
+      const {
+        endTimeEl
+      } = this.$refs;
 
       if (endTimeEl) {
         endTimeEl.setAttribute("content", formatTime(this.endTime, "ISO-8601"));
@@ -317,8 +322,10 @@ var mousedown = false;
 
       return formatTime(this.endTime);
     },
-    currentTimeText: function currentTimeText() {
-      var currentTimeEl = this.$refs.currentTimeEl;
+    currentTimeText: function () {
+      const {
+        currentTimeEl
+      } = this.$refs;
 
       if (currentTimeEl) {
         currentTimeEl.setAttribute("content", formatTime(this.currentTime, "ISO-8601"));
@@ -328,28 +335,34 @@ var mousedown = false;
     }
   },
   methods: {
-    onLoadedMetaData: function onLoadedMetaData() {
+    onLoadedMetaData() {
       this.endTime = this.$refs.audioEl.duration;
       this.$emit("loadedmetadata");
     },
-    onLodedData: function onLodedData() {
+
+    onLodedData() {
       this.endTime = this.$refs.audioEl.duration;
       this.buffering = false;
     },
-    onClickPlayer: function onClickPlayer(e) {
-      var _this$$refs = this.$refs,
-          currentTimeEl = _this$$refs.currentTimeEl,
-          endTimeEl = _this$$refs.endTimeEl,
-          audioEl = _this$$refs.audioEl;
-      var ignoreList = [currentTimeEl, endTimeEl];
+
+    onClickPlayer(e) {
+      const {
+        currentTimeEl,
+        endTimeEl,
+        audioEl
+      } = this.$refs;
+      const ignoreList = [currentTimeEl, endTimeEl];
       e.preventDefault();
       if (this.isNearSeekBar(e) || ignoreList.indexOf(e.target) !== -1) return;
       if (audioEl.readyState <= 1) this.buffering = true;
       this.paused = !this.paused;
     },
-    onTimeUpdate: function onTimeUpdate() {
+
+    onTimeUpdate() {
       if (mousedown) return;
-      var audioEl = this.$refs.audioEl;
+      const {
+        audioEl
+      } = this.$refs;
       if (this.endTimeText === "00:00") this.endTime = audioEl.duration;
 
       if (audioEl.readyState > 1 && audioEl.currentTime) {
@@ -358,38 +371,45 @@ var mousedown = false;
         this.handleProgess();
       }
     },
-    handleMouseDown: function handleMouseDown(e) {
+
+    handleMouseDown(e) {
       if (mousedown) return;
       if (this.isNearSeekBar(e)) mousedown = true;
     },
-    handleMouseUp: function handleMouseUp(e) {
+
+    handleMouseUp(e) {
       if (!mousedown) return;
       mousedown && this.scrub(e);
       mousedown = false;
     },
-    handleMouseMove: function handleMouseMove(e) {
+
+    handleMouseMove(e) {
       e.preventDefault();
       mousedown && this.scrub(e);
     },
-    handleProgess: function handleProgess() {
-      var _this$$refs2 = this.$refs,
-          progressBarEl = _this$$refs2.progressBarEl,
-          progressDotEl = _this$$refs2.progressDotEl,
-          audioEl = _this$$refs2.audioEl;
-      var percent = audioEl.currentTime / audioEl.duration * 100;
-      progressBarEl.style.width = "".concat(percent, "%");
-      progressDotEl.style.left = "".concat(percent, "%");
+
+    handleProgess() {
+      const {
+        progressBarEl,
+        progressDotEl,
+        audioEl
+      } = this.$refs;
+      const percent = audioEl.currentTime / audioEl.duration * 100;
+      progressBarEl.style.width = `${percent}%`;
+      progressDotEl.style.left = `${percent}%`;
     },
-    scrub: function scrub(e) {
-      var isTouchEvent = e.type.includes("touch");
-      var _this$$refs3 = this.$refs,
-          progressBarEl = _this$$refs3.progressBarEl,
-          progressEl = _this$$refs3.progressEl,
-          progressDotEl = _this$$refs3.progressDotEl,
-          audioEl = _this$$refs3.audioEl;
-      var progressOffset = progressEl.getBoundingClientRect();
-      var progressWidth = progressEl.clientWidth;
-      var slidePosition = (isTouchEvent ? e.changedTouches[0].clientX : e.clientX) - progressOffset.left;
+
+    scrub(e) {
+      const isTouchEvent = e.type.includes("touch");
+      const {
+        progressBarEl,
+        progressEl,
+        progressDotEl,
+        audioEl
+      } = this.$refs;
+      const progressOffset = progressEl.getBoundingClientRect();
+      const progressWidth = progressEl.clientWidth;
+      let slidePosition = (isTouchEvent ? e.changedTouches[0].clientX : e.clientX) - progressOffset.left;
 
       if (slidePosition < 0) {
         slidePosition = 0;
@@ -398,10 +418,10 @@ var mousedown = false;
       }
 
       if (slidePosition >= 0 && slidePosition <= progressWidth - 1) {
-        var scrubTime = slidePosition / progressWidth * audioEl.duration;
-        var percent = scrubTime / audioEl.duration * 100;
-        if (!this.buffering) progressBarEl.style.width = "".concat(percent, "%");
-        progressDotEl.style.left = "".concat(percent, "%");
+        const scrubTime = slidePosition / progressWidth * audioEl.duration;
+        const percent = scrubTime / audioEl.duration * 100;
+        if (!this.buffering) progressBarEl.style.width = `${percent}%`;
+        progressDotEl.style.left = `${percent}%`;
         this.currentTime = scrubTime;
 
         if (["click", "mouseup", "touchend", "touchcancel", "touchleave", "mouseleave"].includes(e.type) || slidePosition === 0 || slidePosition === progressWidth) {
@@ -409,7 +429,8 @@ var mousedown = false;
         }
       }
     },
-    onPlay: function onPlay(e) {
+
+    onPlay(e) {
       if (window.currentlyPlaying && window.currentlyPlaying !== e.target) {
         window.currentlyPlaying.pause();
       }
@@ -417,27 +438,39 @@ var mousedown = false;
       window.currentlyPlaying = e.target;
       this.paused = false;
     },
-    onPlaying: function onPlaying() {
+
+    onPlaying() {
       this.buffering = false;
     },
-    onPause: function onPause() {
+
+    onPause() {
       this.paused = true;
     },
-    onEnded: function onEnded() {
+
+    onEnded() {
       this.paused = true;
     },
-    onBuffering: function onBuffering() {
+
+    onBuffering() {
       this.buffering = true;
     },
-    isNearSeekBar: function isNearSeekBar(e) {
-      var isTouchEvent = e.type.includes("touch");
-      var _this$$refs4 = this.$refs,
-          progressEl = _this$$refs4.progressEl,
-          playerEl = _this$$refs4.playerEl;
-      var progressElOffset = progressEl.getBoundingClientRect();
-      var playerElOffset = playerEl.getBoundingClientRect();
-      var touchPointX = isTouchEvent ? e.touches[0].clientX : e.clientX;
-      var touchPointY = isTouchEvent ? e.touches[0].clientY : e.clientY;
+
+    onError(e) {
+      this.paused = true;
+      this.buffering = false;
+      this.$emit("error", e);
+    },
+
+    isNearSeekBar(e) {
+      const isTouchEvent = e.type.includes("touch");
+      const {
+        progressEl,
+        playerEl
+      } = this.$refs;
+      const progressElOffset = progressEl.getBoundingClientRect();
+      const playerElOffset = playerEl.getBoundingClientRect();
+      const touchPointX = isTouchEvent ? e.touches[0].clientX : e.clientX;
+      const touchPointY = isTouchEvent ? e.touches[0].clientY : e.clientY;
 
       if (touchPointX >= progressElOffset.left && touchPointX <= progressElOffset.left + progressEl.clientWidth && touchPointY >= playerElOffset.top && touchPointY <= playerElOffset.top + playerEl.clientHeight) {
         return true;
@@ -445,6 +478,7 @@ var mousedown = false;
 
       return false;
     }
+
   }
 });
 // CONCATENATED MODULE: ./src/components/AudioPlayer.vue?vue&type=script&lang=js&
