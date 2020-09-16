@@ -171,7 +171,6 @@ export default {
       mousedown = false;
     },
     handleMouseMove(e) {
-      e.preventDefault();
       if (this.disabled) return;
       mousedown && this.scrub(e);
     },
@@ -250,17 +249,16 @@ export default {
     },
     isNearSeekBar(e) {
       const isTouchEvent = e.type.includes("touch");
-      const { progressEl, playerEl } = this.$refs;
+      const { progressEl } = this.$refs;
       const progressElOffset = progressEl.getBoundingClientRect();
-      const playerElOffset = playerEl.getBoundingClientRect();
       const touchPointX = isTouchEvent ? e.touches[0].clientX : e.clientX;
       const touchPointY = isTouchEvent ? e.touches[0].clientY : e.clientY;
 
       if (
         touchPointX >= progressElOffset.left &&
         touchPointX <= progressElOffset.left + progressEl.clientWidth &&
-        touchPointY >= playerElOffset.top &&
-        touchPointY <= playerElOffset.top + playerEl.clientHeight
+        touchPointY >= progressElOffset.top - 1 &&
+        touchPointY <= progressElOffset.top + 2
       ) {
         return true;
       }
