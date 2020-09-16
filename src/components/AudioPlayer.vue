@@ -30,7 +30,7 @@
       @touchend="handleMouseUp"
       @touchcancel="handleMouseUp"
     >
-      <div class="player-button gold-button">
+      <div ref="playButton" class="player-button gold-button">
         <i
           :class="['icon', paused ? 'audio-play-icon' : 'audio-pause-icon']"
         ></i>
@@ -133,7 +133,7 @@ export default {
       this.buffering = false;
     },
     handleMouseClick(e) {
-      const { currentTimeEl, endTimeEl, audioEl } = this.$refs;
+      const { currentTimeEl, endTimeEl, audioEl, playButton } = this.$refs;
       const ignoreList = [currentTimeEl, endTimeEl];
 
       e.preventDefault();
@@ -144,8 +144,7 @@ export default {
 
       if (this.isNearSeekBar(e) || ignoreList.indexOf(e.target) !== -1) return;
       if (audioEl.readyState <= 1) this.buffering = true;
-
-      this.paused = !this.paused;
+      if (playButton.contains(e.target)) this.paused = !this.paused;
     },
     onTimeUpdate() {
       if (mousedown) return;
