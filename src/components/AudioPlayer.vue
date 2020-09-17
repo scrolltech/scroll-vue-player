@@ -31,21 +31,31 @@
         ></i>
       </div>
 
-      <div ref="currentTimeEl" class="player-time player-current-time">
+      <div
+        ref="currentTimeEl"
+        :class="[
+          'player-time',
+          'player-current-time',
+          buffering ? 'player-buffering' : ''
+        ]"
+      >
         {{ currentTimeText }}
       </div>
 
-      <div ref="playerSeekbarEl" class="player-seekbar">
+      <div
+        ref="playerSeekbarEl"
+        class="player-seekbar"
+        @mousemove="handleMouseMove"
+        @touchmove="handleMouseMove"
+        @mousedown="handleMouseDown"
+        @touchstart="handleMouseDown"
+        @mouseup="handleMouseUp"
+        @mouseleave="handleMouseUp"
+        @touchend="handleMouseUp"
+        @touchcancel="handleMouseUp"
+      >
         <div
           ref="progressEl"
-          @mousemove="handleMouseMove"
-          @touchmove="handleMouseMove"
-          @mousedown="handleMouseDown"
-          @touchstart="handleMouseDown"
-          @mouseup="handleMouseUp"
-          @mouseleave="handleMouseUp"
-          @touchend="handleMouseUp"
-          @touchcancel="handleMouseUp"
           :class="['progress', buffering ? 'indeterminate-progress' : '']"
         >
           <div
@@ -101,10 +111,6 @@ export default {
       const audioEl = this.$refs.audioEl;
       if (newValue !== oldValue)
         newValue ? !audioEl.paused && audioEl.pause() : audioEl.play();
-    },
-    buffering: function(newValue, oldValue) {
-      if (newValue !== oldValue && newValue)
-        this.$refs.progressBarEl.style.width = "100%";
     }
   },
   computed: {
@@ -149,7 +155,9 @@ export default {
         this.handleProgess();
       }
     },
-    handleMouseDown() {
+    handleMouseDown(e) {
+      if (e.type.includes("touch") && e.target !== this.$refs.progressDotEl)
+        return;
       if (mousedown || this.disabled) return;
       mousedown = true;
     },
@@ -160,9 +168,9 @@ export default {
     },
     handleMouseMove(e) {
       const isTouchEvent = e.type.includes("touch");
-      const { progressEl } = this.$refs;
+      const { playerSeekbarEl } = this.$refs;
       const touchPointY = isTouchEvent ? e.touches[0].clientY : e.clientY;
-      const progressElOffset = progressEl.getBoundingClientRect();
+      const playerSeekbarElOffset = playerSeekbarEl.getBoundingClientRect();
 
       if (!mousedown || this.disabled) return;
 
@@ -171,8 +179,8 @@ export default {
       mousedown && this.scrub(e);
 
       if (
-        touchPointY <= progressElOffset.top ||
-        touchPointY >= progressElOffset.top + progressEl.clientHeight
+        touchPointY <= playerSeekbarElOffset.top ||
+        touchPointY >= playerSeekbarElOffset.top + playerSeekbarEl.clientHeight
       ) {
         mousedown = false;
         this.scrub(e);

@@ -212,18 +212,32 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c2ecb1c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=template&id=7023f042&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c2ecb1c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=template&id=a5f53ebc&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('audio',{ref:"audioEl",attrs:{"src":_vm.src},on:{"loadedmetadata":_vm.onLoadedMetaData,"loadeddata":_vm.onLodedData,"timeupdate":_vm.onTimeUpdate,"play":_vm.onPlay,"playing":_vm.onPlaying,"waiting":_vm.onBuffering,"pause":_vm.onPause,"ended":_vm.onEnded,"error":_vm.onError}}),_c('div',{ref:"playerEl",class:[
       'audio-player',
       _vm.paused ? '' : 'audio-player-playing',
       _vm.disabled ? 'audio-player-disabled' : ''
-    ]},[_c('div',{ref:"playButton",staticClass:"player-button gold-button",on:{"click":_vm.handleMouseClick}},[_c('i',{class:['icon', _vm.paused ? 'audio-play-icon' : 'audio-pause-icon']})]),_c('div',{ref:"currentTimeEl",staticClass:"player-time player-current-time"},[_vm._v(" "+_vm._s(_vm.currentTimeText)+" ")]),_c('div',{ref:"playerSeekbarEl",staticClass:"player-seekbar"},[_c('div',{ref:"progressEl",class:['progress', _vm.buffering ? 'indeterminate-progress' : ''],on:{"mousemove":_vm.handleMouseMove,"touchmove":_vm.handleMouseMove,"mousedown":_vm.handleMouseDown,"touchstart":_vm.handleMouseDown,"mouseup":_vm.handleMouseUp,"mouseleave":_vm.handleMouseUp,"touchend":_vm.handleMouseUp,"touchcancel":_vm.handleMouseUp}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.buffering),expression:"!buffering"}],ref:"progressDotEl",staticClass:"progress-pin"}),_c('div',{ref:"progressBarEl",staticClass:"progress-bar",staticStyle:{"width":"0"},attrs:{"role":"progressbar","aria-valuemin":"0","aria-valuemax":"100"}})])]),_c('div',{ref:"endTimeEl",staticClass:"player-time player-end-time"},[_vm._v(" "+_vm._s(_vm.endTimeText)+" ")])])])}
+    ]},[_c('div',{ref:"playButton",staticClass:"player-button gold-button",on:{"click":_vm.handleMouseClick}},[_c('i',{class:['icon', _vm.paused ? 'audio-play-icon' : 'audio-pause-icon']})]),_c('div',{ref:"currentTimeEl",class:[
+        'player-time',
+        'player-current-time',
+        _vm.buffering ? 'player-buffering' : ''
+      ]},[_vm._v(" "+_vm._s(_vm.currentTimeText)+" ")]),_c('div',{ref:"playerSeekbarEl",staticClass:"player-seekbar",on:{"mousemove":_vm.handleMouseMove,"touchmove":_vm.handleMouseMove,"mousedown":_vm.handleMouseDown,"touchstart":_vm.handleMouseDown,"mouseup":_vm.handleMouseUp,"mouseleave":_vm.handleMouseUp,"touchend":_vm.handleMouseUp,"touchcancel":_vm.handleMouseUp}},[_c('div',{ref:"progressEl",class:['progress', _vm.buffering ? 'indeterminate-progress' : '']},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.buffering),expression:"!buffering"}],ref:"progressDotEl",staticClass:"progress-pin"}),_c('div',{ref:"progressBarEl",staticClass:"progress-bar",staticStyle:{"width":"0"},attrs:{"role":"progressbar","aria-valuemin":"0","aria-valuemax":"100"}})])]),_c('div',{ref:"endTimeEl",staticClass:"player-time player-end-time"},[_vm._v(" "+_vm._s(_vm.endTimeText)+" ")])])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/AudioPlayer.vue?vue&type=template&id=7023f042&
+// CONCATENATED MODULE: ./src/components/AudioPlayer.vue?vue&type=template&id=a5f53ebc&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -329,9 +343,6 @@ let mousedown = false;
     paused: function (newValue, oldValue) {
       const audioEl = this.$refs.audioEl;
       if (newValue !== oldValue) newValue ? !audioEl.paused && audioEl.pause() : audioEl.play();
-    },
-    buffering: function (newValue, oldValue) {
-      if (newValue !== oldValue && newValue) this.$refs.progressBarEl.style.width = "100%";
     }
   },
   computed: {
@@ -378,7 +389,8 @@ let mousedown = false;
       }
     },
 
-    handleMouseDown() {
+    handleMouseDown(e) {
+      if (e.type.includes("touch") && e.target !== this.$refs.progressDotEl) return;
       if (mousedown || this.disabled) return;
       mousedown = true;
     },
@@ -392,15 +404,15 @@ let mousedown = false;
     handleMouseMove(e) {
       const isTouchEvent = e.type.includes("touch");
       const {
-        progressEl
+        playerSeekbarEl
       } = this.$refs;
       const touchPointY = isTouchEvent ? e.touches[0].clientY : e.clientY;
-      const progressElOffset = progressEl.getBoundingClientRect();
+      const playerSeekbarElOffset = playerSeekbarEl.getBoundingClientRect();
       if (!mousedown || this.disabled) return;
       if (e.cancelable) e.preventDefault();
       mousedown && this.scrub(e);
 
-      if (touchPointY <= progressElOffset.top || touchPointY >= progressElOffset.top + progressEl.clientHeight) {
+      if (touchPointY <= playerSeekbarElOffset.top || touchPointY >= playerSeekbarElOffset.top + playerSeekbarEl.clientHeight) {
         mousedown = false;
         this.scrub(e);
       }
