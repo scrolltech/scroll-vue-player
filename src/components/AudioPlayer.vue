@@ -54,10 +54,7 @@
         @touchend="handleMouseUp"
         @touchcancel="handleMouseUp"
       >
-        <div
-          ref="progressEl"
-          :class="['progress', buffering ? 'indeterminate-progress' : '']"
-        >
+        <div ref="progressEl" class="progress">
           <div
             v-show="!buffering"
             ref="progressDotEl"
@@ -155,8 +152,11 @@ export default {
         this.handleProgess();
       }
     },
-    handleMouseDown(e) {
-      if (e.type.includes("touch") && e.target !== this.$refs.progressDotEl)
+    handleMouseDown({ type, touches }) {
+      if (
+        type.includes("touch") &&
+        this.isNearDot(touches[0].clientX, touches[0].clientY)
+      )
         return;
       if (mousedown || this.disabled) return;
       mousedown = true;
@@ -259,6 +259,18 @@ export default {
       this.paused = true;
       this.buffering = false;
       this.$emit("error", e);
+    },
+    isNearDot(x, y) {
+      const { progressDotEl } = this.$refs;
+      const { top, left } = progressDotEl.getBoundingClientRect();
+      if (
+        x > left - 20 &&
+        left + progressDotEl.clientWidth + 20 > x &&
+        y > top - 20 &&
+        top + progressDotEl.clientHeight + 20 > y
+      )
+        return false;
+      return true;
     }
   }
 };
