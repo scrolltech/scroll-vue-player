@@ -171,6 +171,7 @@ export default {
       mousedown = false;
     },
     handleMouseMove(e) {
+      if (this.isNearSeekBar(e)) e.preventDefault();
       if (this.disabled) return;
       mousedown && this.scrub(e);
     },
@@ -257,8 +258,8 @@ export default {
       if (
         touchPointX >= progressElOffset.left &&
         touchPointX <= progressElOffset.left + progressEl.clientWidth &&
-        touchPointY >= progressElOffset.top - 1 &&
-        touchPointY <= progressElOffset.top + 2
+        touchPointY >= progressElOffset.top - 7 &&
+        touchPointY <= progressElOffset.top + progressEl.clientHeight + 7
       ) {
         return true;
       }
@@ -267,3 +268,14 @@ export default {
   }
 };
 </script>
+<style>
+.audio-player {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+</style>
