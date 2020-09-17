@@ -20,17 +20,12 @@
         disabled ? 'audio-player-disabled' : ''
       ]"
       ref="playerEl"
-      @click="handleMouseClick"
-      @mousemove="handleMouseMove"
-      @touchmove="handleMouseMove"
-      @mousedown="handleMouseDown"
-      @touchstart="handleMouseDown"
-      @mouseup="handleMouseUp"
-      @mouseleave="handleMouseUp"
-      @touchend="handleMouseUp"
-      @touchcancel="handleMouseUp"
     >
-      <div ref="playButton" class="player-button gold-button">
+      <div
+        @click="handleMouseClick"
+        ref="playButton"
+        class="player-button gold-button"
+      >
         <i
           :class="['icon', paused ? 'audio-play-icon' : 'audio-pause-icon']"
         ></i>
@@ -43,6 +38,14 @@
       <div ref="playerSeekbarEl" class="player-seekbar">
         <div
           ref="progressEl"
+          @mousemove="handleMouseMove"
+          @touchmove="handleMouseMove"
+          @mousedown="handleMouseDown"
+          @touchstart="handleMouseDown"
+          @mouseup="handleMouseUp"
+          @mouseleave="handleMouseUp"
+          @touchend="handleMouseUp"
+          @touchcancel="handleMouseUp"
           :class="['progress', buffering ? 'indeterminate-progress' : '']"
         >
           <div
@@ -109,7 +112,7 @@ export default {
       return this.endTime ? formatTime(this.endTime) : "--:--";
     },
     currentTimeText: function() {
-      return this.endTime ? formatTime(this.currentTime) : "";
+      return formatTime(this.currentTime);
     }
   },
   methods: {
@@ -122,16 +125,12 @@ export default {
       this.buffering = false;
     },
     handleMouseClick(e) {
-      const { currentTimeEl, endTimeEl, audioEl, playButton } = this.$refs;
-      const ignoreList = [currentTimeEl, endTimeEl];
-
-      e.preventDefault();
+      const { playButton, audioEl } = this.$refs;
 
       this.$emit("click", e);
 
       if (this.disabled) return;
 
-      if (this.isNearSeekBar(e) || ignoreList.indexOf(e.target) !== -1) return;
       if (audioEl.readyState <= 1) this.buffering = true;
       if (playButton.contains(e.target)) this.paused = !this.paused;
     },
@@ -150,9 +149,9 @@ export default {
         this.handleProgess();
       }
     },
-    handleMouseDown(e) {
+    handleMouseDown() {
       if (mousedown || this.disabled) return;
-      if (this.isNearSeekBar(e)) mousedown = true;
+      mousedown = true;
     },
     handleMouseUp(e) {
       if (!mousedown || this.disabled) return;
@@ -160,9 +159,24 @@ export default {
       mousedown = false;
     },
     handleMouseMove(e) {
-      if (this.isNearSeekBar(e)) e.preventDefault();
-      if (this.disabled) return;
+      const isTouchEvent = e.type.includes("touch");
+      const { progressEl } = this.$refs;
+      const touchPointY = isTouchEvent ? e.touches[0].clientY : e.clientY;
+      const progressElOffset = progressEl.getBoundingClientRect();
+
+      if (!mousedown || this.disabled) return;
+
+      if (e.cancelable) e.preventDefault();
+
       mousedown && this.scrub(e);
+
+      if (
+        touchPointY <= progressElOffset.top ||
+        touchPointY >= progressElOffset.top + progressEl.clientHeight
+      ) {
+        mousedown = false;
+        this.scrub(e);
+      }
     },
     handleProgess() {
       const { progressBarEl, progressDotEl, audioEl } = this.$refs;
@@ -203,6 +217,7 @@ export default {
             "touchleave",
             "mouseleave"
           ].includes(e.type) ||
+          (!mousedown && ["touchmove", "mousemove"].includes(e.type)) ||
           slidePosition === 0 ||
           slidePosition === progressWidth
         ) {
@@ -236,23 +251,6 @@ export default {
       this.paused = true;
       this.buffering = false;
       this.$emit("error", e);
-    },
-    isNearSeekBar(e) {
-      const isTouchEvent = e.type.includes("touch");
-      const { progressEl } = this.$refs;
-      const progressElOffset = progressEl.getBoundingClientRect();
-      const touchPointX = isTouchEvent ? e.touches[0].clientX : e.clientX;
-      const touchPointY = isTouchEvent ? e.touches[0].clientY : e.clientY;
-
-      if (
-        touchPointX >= progressElOffset.left &&
-        touchPointX <= progressElOffset.left + progressEl.clientWidth &&
-        touchPointY >= progressElOffset.top - 8 &&
-        touchPointY <= progressElOffset.top + progressEl.clientHeight + 8
-      ) {
-        return true;
-      }
-      return false;
     }
   }
 };
