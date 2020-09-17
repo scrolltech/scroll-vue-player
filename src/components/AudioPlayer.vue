@@ -106,21 +106,10 @@ export default {
   },
   computed: {
     endTimeText: function() {
-      const { endTimeEl } = this.$refs;
-      if (endTimeEl) {
-        endTimeEl.setAttribute("content", formatTime(this.endTime, "ISO-8601"));
-      }
-      return formatTime(this.endTime);
+      return this.endTime ? formatTime(this.endTime) : "--:--";
     },
     currentTimeText: function() {
-      const { currentTimeEl } = this.$refs;
-      if (currentTimeEl) {
-        currentTimeEl.setAttribute(
-          "content",
-          formatTime(this.currentTime, "ISO-8601")
-        );
-      }
-      return formatTime(this.currentTime);
+      return this.endTime ? formatTime(this.currentTime) : "";
     }
   },
   methods: {
@@ -151,7 +140,7 @@ export default {
 
       const { audioEl } = this.$refs;
 
-      if (this.endTimeText === "00:00") this.endTime = audioEl.duration;
+      if (!this.endTime) this.endTime = audioEl.duration;
 
       if (audioEl.readyState > 1 && audioEl.currentTime) {
         if (!audioEl.paused) this.paused = false;
@@ -258,8 +247,8 @@ export default {
       if (
         touchPointX >= progressElOffset.left &&
         touchPointX <= progressElOffset.left + progressEl.clientWidth &&
-        touchPointY >= progressElOffset.top - 7 &&
-        touchPointY <= progressElOffset.top + progressEl.clientHeight + 7
+        touchPointY >= progressElOffset.top - 8 &&
+        touchPointY <= progressElOffset.top + progressEl.clientHeight + 8
       ) {
         return true;
       }
@@ -268,14 +257,3 @@ export default {
   }
 };
 </script>
-<style>
-.audio-player {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
-}
-</style>
