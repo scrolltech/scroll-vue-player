@@ -253,7 +253,11 @@ export default {
       this.handleProgess();
     },
     onBuffering() {
-      this.buffering = true;
+      const currentTimeBeforeBuffering = this.currentTime;
+      setTimeout(() => {
+        if (currentTimeBeforeBuffering === this.currentTime)
+          this.buffering = true;
+      }, 500);
     },
     onError(e) {
       this.paused = true;
