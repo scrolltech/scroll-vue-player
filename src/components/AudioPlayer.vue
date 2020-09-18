@@ -257,7 +257,7 @@ export default {
       setTimeout(() => {
         if (currentTimeBeforeBuffering === this.currentTime)
           this.buffering = true;
-      }, 500);
+      }, 300);
     },
     onError(e) {
       this.paused = true;
