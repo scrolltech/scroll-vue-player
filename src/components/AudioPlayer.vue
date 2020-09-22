@@ -20,9 +20,10 @@
         disabled ? 'audio-player-disabled' : ''
       ]"
       ref="playerEl"
+      @click="handlePlayerClick"
     >
       <div
-        @click="handleMouseClick"
+        @click="handleIconClick"
         ref="playButton"
         class="player-button gold-button"
       >
@@ -127,10 +128,11 @@ export default {
       this.endTime = this.$refs.audioEl.duration;
       this.buffering = false;
     },
-    handleMouseClick(e) {
-      const { playButton, audioEl } = this.$refs;
-
+    handlePlayerClick(e) {
       this.$emit("click", e);
+    },
+    handleIconClick(e) {
+      const { playButton, audioEl } = this.$refs;
 
       if (this.disabled) return;
 
