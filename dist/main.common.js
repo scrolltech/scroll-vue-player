@@ -203,7 +203,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c2ecb1c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=template&id=4c78e314&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c2ecb1c6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=template&id=8e9659e4&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('audio',{ref:"audioEl",attrs:{"src":_vm.src},on:{"loadedmetadata":_vm.onLoadedMetaData,"loadeddata":_vm.onLodedData,"timeupdate":_vm.onTimeUpdate,"play":_vm.onPlay,"playing":_vm.onPlaying,"waiting":_vm.onBuffering,"pause":_vm.onPause,"ended":_vm.onEnded,"error":_vm.onError}}),_c('div',{ref:"playerEl",class:[
       'audio-player',
       _vm.paused ? '' : 'audio-player-playing',
@@ -216,7 +216,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/AudioPlayer.vue?vue&type=template&id=4c78e314&
+// CONCATENATED MODULE: ./src/components/AudioPlayer.vue?vue&type=template&id=8e9659e4&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AudioPlayer.vue?vue&type=script&lang=js&
 //
@@ -299,18 +299,13 @@ var staticRenderFns = []
 //
 //
 //
-const formatTime = (secNum, format) => {
+const formatTime = secNum => {
   if (!secNum) {
     return "00:00";
   }
 
   const minutes = Math.floor(secNum / 60);
   const seconds = Math.floor(secNum - minutes * 60);
-
-  if (format === "ISO-8601") {
-    return "T" + minutes + "M" + seconds + "S";
-  }
-
   return ("0" + minutes).slice(-2) + ":" + ("0" + seconds).slice(-2);
 };
 
@@ -425,7 +420,6 @@ let mousedown = false;
     },
 
     scrub(e) {
-      const isTouchEvent = e.type.includes("touch");
       const {
         progressBarEl,
         progressEl,
@@ -434,24 +428,16 @@ let mousedown = false;
       } = this.$refs;
       const progressOffset = progressEl.getBoundingClientRect();
       const progressWidth = progressEl.clientWidth;
-      let slidePosition = (isTouchEvent ? e.changedTouches[0].clientX : e.clientX) - progressOffset.left;
+      let slidePosition = (e.type.includes("touch") ? e.changedTouches[0].clientX : e.clientX) - progressOffset.left;
+      slidePosition = Math.max(slidePosition, 0) && Math.min(slidePosition, progressWidth);
+      const scrubTime = slidePosition / progressWidth * audioEl.duration;
+      const percent = scrubTime / audioEl.duration * 100;
+      if (!this.buffering) progressBarEl.style.width = `${percent}%`;
+      progressDotEl.style.left = `${percent}%`;
+      this.currentTime = scrubTime;
 
-      if (slidePosition < 0) {
-        slidePosition = 0;
-      } else if (slidePosition > progressWidth) {
-        slidePosition = progressWidth - 1;
-      }
-
-      if (slidePosition >= 0 && slidePosition <= progressWidth - 1) {
-        const scrubTime = slidePosition / progressWidth * audioEl.duration;
-        const percent = scrubTime / audioEl.duration * 100;
-        if (!this.buffering) progressBarEl.style.width = `${percent}%`;
-        progressDotEl.style.left = `${percent}%`;
-        this.currentTime = scrubTime;
-
-        if (["click", "mouseup", "touchend", "touchcancel", "touchleave", "mouseleave"].includes(e.type) || !mousedown && ["touchmove", "mousemove"].includes(e.type) || slidePosition === 0 || slidePosition === progressWidth) {
-          audioEl.currentTime = scrubTime;
-        }
+      if (["click", "mouseup", "touchend", "touchcancel", "touchleave", "mouseleave"].includes(e.type) || !mousedown && e.type.includes("move")) {
+        audioEl.currentTime = scrubTime;
       }
     },
 
