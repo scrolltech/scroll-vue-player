@@ -142,7 +142,8 @@ export default {
 
       const { audioEl } = this.$refs;
 
-      if (!this.endTime) this.endTime = audioEl.duration;
+      if (!this.endTime || this.endTime !== audioEl.duration)
+        this.endTime = audioEl.duration;
 
       if (audioEl.readyState > 1 && audioEl.currentTime) {
         if (!audioEl.paused) this.paused = false;
@@ -170,7 +171,8 @@ export default {
       const isTouchEvent = e.type.includes("touch");
       const { playerSeekbarEl } = this.$refs;
       const touchPointY = isTouchEvent ? e.touches[0].clientY : e.clientY;
-      const playerSeekbarElOffset = playerSeekbarEl.getBoundingClientRect();
+      const touchPointX = isTouchEvent ? e.touches[0].clientX : e.clientX;
+      const { left, top } = playerSeekbarEl.getBoundingClientRect();
 
       if (!mousedown || this.disabled) return;
 
@@ -179,8 +181,10 @@ export default {
       mousedown && this.scrub(e);
 
       if (
-        touchPointY <= playerSeekbarElOffset.top ||
-        touchPointY >= playerSeekbarElOffset.top + playerSeekbarEl.clientHeight
+        touchPointY <= top ||
+        touchPointY >= top + playerSeekbarEl.clientHeight ||
+        touchPointX <= left - 10 ||
+        touchPointX >= left + playerSeekbarEl.clientWidth + 10
       ) {
         mousedown = false;
         this.scrub(e);
