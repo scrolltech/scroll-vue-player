@@ -17,7 +17,7 @@
       :class="[
         'audio-player',
         paused ? '' : 'audio-player-playing',
-        disabled ? 'audio-player-disabled' : ''
+        disabled ? 'audio-player-initialising' : ''
       ]"
       ref="playerEl"
       @click="handlePlayerClick"
