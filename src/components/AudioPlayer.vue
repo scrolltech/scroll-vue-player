@@ -105,7 +105,7 @@ export default {
   watch: {
     paused: function(newValue, oldValue) {
       const audioEl = this.$refs.audioEl;
-      if (newValue !== oldValue)
+      if (audioEl && newValue !== oldValue)
         newValue ? !audioEl.paused && audioEl.pause() : audioEl.play();
     }
   },
@@ -119,10 +119,12 @@ export default {
   },
   methods: {
     onLoadedMetaData() {
+      if (!this.$refs.audioEl) return;
       this.endTime = this.$refs.audioEl.duration;
       this.$emit("loadedmetadata");
     },
     onLodedData() {
+      if (!this.$refs.audioEl) return;
       this.endTime = this.$refs.audioEl.duration;
       this.buffering = false;
     },
